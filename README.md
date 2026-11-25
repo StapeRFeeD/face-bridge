@@ -1,5 +1,7 @@
 # Face Bridge
 
+**CAUTION! SHIT IS VIBECODED AF. looks nice tho, and works dope**
+
 **PICO 4 Pro / Enterprise face & eye tracking for standalone VRChat — no PC, no root.**
 
 Face Bridge is a small Android app that runs on the headset next to VRChat. It reads PICO's
@@ -13,7 +15,7 @@ parameters, or both.
 
 ## Features
 
-- **Works with standalone VRChat** on the headset. No PC, no streaming, no Virtual Desktop.
+- **Works with standalone VRChat** on the headset. No PC? No problem.
 - **Both VRChat face tracking formats.** It finds VRChat through OSCQuery and reads the current
   avatar's parameters. VRCFT v2 avatars (`FT/v2/…`, binary-synced copies, sign bits) get exactly
   the parameters they have. Avatars with VRChat's built-in face tracking get the native
@@ -21,7 +23,7 @@ parameters, or both.
 - **Eye tracking.** Eye bones and eyelids move through VRChat's OSC eye tracking.
 - **Turns off avatar visemes while lips are tracked** on avatars with a `VisemesEnable` toggle,
   so microphone visemes don't stack on top of tracked lips. The toggle is restored when the bridge stops.
-- **Battery-aware.** PICO's face cameras only run while they are useful: the headset is awake,
+- **Battery-aware.** PICO's face cameras only run while they are used: the headset is awake,
   VRChat is running and the current avatar has face tracking. Otherwise the bridge stands by with
   the cameras off.
 - **Personal calibration.** A 2-minute guided session (17 expressions) maps your real
