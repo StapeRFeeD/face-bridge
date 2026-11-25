@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The package name comes from `namespace`/`applicationId` in app/build.gradle.kts
+     (AGP 8 rejects the old package="" attribute). -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- PICO OS 5.x tracking permissions (no root needed) -->
+    <uses-permission android:name="com.picovr.permission.FACE_TRACKING" />
+    <uses-permission android:name="com.picovr.permission.EYE_TRACKING" />
+    <!-- PICO: allow the app to keep running while another VR app (VRChat) is in front -->
+    <uses-permission android:name="com.picovr.permission.BACKGROUND_PLAYBACK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+
+    <application
+        android:allowBackup="false"
+        android:label="Face Bridge"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/FaceBridge.Window">
+
+        <!-- Deliberately NOT a VR app (no pvr.app.type=vr / picovr.software.* metadata):
+             PICO OS force-stops a "marked" VR app, including its services, when another
+             VR app such as VRChat starts (FEAT_SINGLE3D). As a 2D app the service survives. -->
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- PICO "near" panel: opens beside the user over a running VR app (like Motion Tracker)
+                 instead of replacing it. -->
+            <meta-data android:name="pico.vr.position" android:value="near" />
+        </activity>
+
+        <!-- adb control entry (autostart / calibrate extras). MainActivity honours those extras only
+             when launched through this alias; DUMP is held by adb shell / system, never by regular
+             apps, so other apps cannot start tracking or calibration through it. -->
+        <activity-alias
+            android:name=".AdbControl"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:permission="android.permission.DUMP">
+            <meta-data android:name="pico.vr.position" android:value="near" />
+        </activity-alias>
+
+        <activity
+            android:name=".CalibrationActivity"
+            android:exported="false">
+            <meta-data android:name="pico.vr.position" android:value="near" />
+        </activity>
+
+        <!-- Exported only so `adb shell am start-foreground-service` works while VRChat is in front
+             (PICO blocks activity launches over a VR app). Protected by DUMP like the alias above. -->
+        <service
+            android:name=".OscBridgeService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.DUMP"
+            android:stopWithTask="false"
+            android:foregroundServiceType="connectedDevice" />
+    </application>
+</manifest>

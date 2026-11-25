@@ -1,0 +1,15 @@
+.gradle/
+build/
+app/build/
+app/.cxx/
+local.properties
+*.iml
+.idea/
+
+# Release signing (see docs/RELEASING.md) — never commit
+keystore.properties
+*.jks
+*.keystore
+
+# Built APKs are attached to GitHub Releases, not committed
+releases/
